@@ -22,9 +22,19 @@ export default async function handler(req: any, res: any) {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
+  console.log("Environment check:", { 
+    hasUrl: !!supabaseUrl, 
+    hasKey: !!supabaseServiceKey,
+    urlPrefix: supabaseUrl?.substring(0, 20) + "..."
+  });
+
   if (!supabaseUrl || !supabaseServiceKey) {
     return res.status(500).json({
       error: "Server is not configured. Missing SUPABASE_URL or SUPABASE_SERVICE_KEY.",
+      details: {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseServiceKey
+      }
     });
   }
 
