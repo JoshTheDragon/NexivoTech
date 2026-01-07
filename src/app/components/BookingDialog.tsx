@@ -31,6 +31,7 @@ interface BookingDialogProps {
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   const [date, setDate] = useState<Date>();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -41,32 +42,62 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // In a real application, this would send data to a backend
-    console.log("Consultation request submitted:", { ...formData, date });
-    
-    toast.success("Consultation request received!", {
-      description: "Our team will reach out within 24 hours to confirm your appointment."
+  const resetForm = () => {
+    setSubmitted(false);
+    onOpenChange(false);
+    setFormData({
+      name: "",
+      email: "",
+      company: "",
+      phone: "",
+      industry: "",
+      service: "",
+      message: ""
     });
-    
-    setSubmitted(true);
-    
-    setTimeout(() => {
-      setSubmitted(false);
-      onOpenChange(false);
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        industry: "",
-        service: "",
-        message: ""
+    setDate(undefined);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/book-consultation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          date: date ? date.toISOString() : null,
+        }),
       });
-      setDate(undefined);
-    }, 2000);
+
+      if (!res.ok) {
+        let message = "Failed to submit consultation request.";
+        try {
+          const data = await res.json();
+          if (typeof data?.error === "string") message = data.error;
+        } catch {
+          // ignore
+        }
+        throw new Error(message);
+      }
+
+      toast.success("Consultation request received!", {
+        description: "Our team will reach out within 24 hours to confirm your appointment."
+      });
+
+      setSubmitted(true);
+      setTimeout(resetForm, 2000);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to submit consultation request.";
+      toast.error("Submission failed", { description: message });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -208,8 +239,12 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
               />
             </div>
             
-            <Button type="submit" className="w-full bg-[#2D5FFF] hover:bg-[#1E40CC] text-white">
-              Schedule Consultation
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[#2D5FFF] hover:bg-[#1E40CC] text-white"
+            >
+              {isSubmitting ? "Submitting..." : "Schedule Consultation"}
             </Button>
           </form>
         ) : (
