@@ -1,4 +1,4 @@
-import { Client } from "@notionhq/client";
+import { createClient } from '@supabase/supabase-js';
 
 type BookingPayload = {
   name?: string;
@@ -19,12 +19,12 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const notionToken = process.env.NOTION_TOKEN;
-  const notionDatabaseId = process.env.NOTION_DATABASE_ID;
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
-  if (!notionToken || !notionDatabaseId) {
+  if (!supabaseUrl || !supabaseServiceKey) {
     return res.status(500).json({
-      error: "Server is not configured. Missing NOTION_TOKEN or NOTION_DATABASE_ID.",
+      error: "Server is not configured. Missing SUPABASE_URL or SUPABASE_SERVICE_KEY.",
     });
   }
 
@@ -58,67 +58,42 @@ export default async function handler(req: any, res: any) {
     });
   }
 
-  const notion = new Client({ auth: notionToken });
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
   try {
-    console.log("Creating Notion page with properties:", {
-      Name: name,
-      Email: email,
-      Company: company,
-      Industry: industry,
-      Service: service
+    console.log("Inserting consultation record:", {
+      name,
+      email,
+      company,
+      industry,
+      service
     });
 
-    const result = await notion.pages.create({
-      parent: { database_id: notionDatabaseId },
-      properties: {
-        Name: {
-          title: [{ type: "text", text: { content: name } }],
-        },
-        Email: {
-          rich_text: [{ type: "text", text: { content: email } }],
-        },
-        Company: {
-          rich_text: [{ type: "text", text: { content: company } }],
-        },
-        Phone: phone
-          ? {
-              rich_text: [{ type: "text", text: { content: phone } }],
-            }
-          : {
-              rich_text: [],
-            },
-        Industry: {
-          select: { name: industry },
-        },
-        Service: {
-          select: { name: service },
-        },
-        Message: message
-          ? {
-              rich_text: [{ type: "text", text: { content: message } }],
-            }
-          : {
-              rich_text: [],
-            },
-        SubmittedAt: {
-          date: { start: new Date().toISOString() },
-        },
-        ...(preferredDate
-          ? {
-              PreferredDate: {
-                date: { start: preferredDate },
-              },
-            }
-          : {}),
-      },
-    });
+    const { data, error } = await supabase
+      .from('consultations')
+      .insert({
+        name,
+        email,
+        company,
+        phone: phone || null,
+        industry,
+        service,
+        message: message || null,
+        preferred_date: preferredDate,
+        submitted_at: new Date().toISOString()
+      })
+      .select();
 
-    console.log("Successfully created Notion page:", result.id);
-    return res.status(200).json({ ok: true });
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    console.log("Successfully created consultation record:", data[0]?.id);
+    return res.status(200).json({ ok: true, id: data[0]?.id });
   } catch (err) {
-    console.error("Notion API error:", err);
-    const message = err instanceof Error ? err.message : "Failed to write to Notion";
+    console.error("Unexpected error:", err);
+    const message = err instanceof Error ? err.message : "Failed to save consultation";
     return res.status(500).json({ error: message });
   }
 }
