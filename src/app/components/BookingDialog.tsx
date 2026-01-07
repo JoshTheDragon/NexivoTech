@@ -57,10 +57,41 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
     setDate(undefined);
   };
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      toast.error("Validation Error", { description: "Name is required" });
+      return false;
+    }
+    if (!formData.email.trim() || !validateEmail(formData.email)) {
+      toast.error("Validation Error", { description: "Valid email is required" });
+      return false;
+    }
+    if (!formData.company.trim()) {
+      toast.error("Validation Error", { description: "Company name is required" });
+      return false;
+    }
+    if (!formData.industry) {
+      toast.error("Validation Error", { description: "Please select an industry" });
+      return false;
+    }
+    if (!formData.service) {
+      toast.error("Validation Error", { description: "Please select a service" });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isSubmitting) return;
+
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
