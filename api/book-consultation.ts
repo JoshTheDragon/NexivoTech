@@ -69,10 +69,10 @@ export default async function handler(req: any, res: any) {
               rich_text: [],
             },
         Industry: {
-          rich_text: [{ type: "text", text: { content: industry } }],
+          select: { name: industry },
         },
         Service: {
-          rich_text: [{ type: "text", text: { content: service } }],
+          select: { name: service },
         },
         Message: message
           ? {
