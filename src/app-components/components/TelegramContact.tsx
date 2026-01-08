@@ -26,7 +26,7 @@ export function TelegramContact() {
 
   const handleTelegramClick = () => {
     // Open your bot directly - replace with your actual bot username
-    const botUsername = "nexivo_lead_bot"; // Change this to your bot's username
+    const botUsername = "Nexivotechnology_bot"; // Change this to your bot's username
     window.open(`https://t.me/${botUsername}`, '_blank');
   };
 
