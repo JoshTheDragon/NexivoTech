@@ -18,6 +18,7 @@ export function TelegramContact() {
     name: "",
     email: "",
     company: "",
+    phone: "",
     industry: "",
     service: "",
     message: ""
@@ -69,6 +70,7 @@ export function TelegramContact() {
         name: "",
         email: "",
         company: "",
+        phone: "",
         industry: "",
         service: "",
         message: ""
@@ -140,6 +142,18 @@ export function TelegramContact() {
                   value={formData.company}
                   onChange={(e) => handleInputChange("company", e.target.value)}
                   placeholder="Your company"
+                  className="bg-white/20 border-white/30 text-white placeholder-white/60"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="quick-phone" className="text-white">Phone Number</Label>
+                <Input
+                  id="quick-phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
+                  placeholder="+1 (555) 123-4567"
                   className="bg-white/20 border-white/30 text-white placeholder-white/60"
                 />
               </div>
