@@ -280,8 +280,8 @@ export function Footer() {
               </div>
               <div className="flex items-start gap-2">
                 <Send className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <a href="https://t.me/nexivo_bot" className="hover:text-[#2D5FFF] transition-colors" target="_blank" rel="noopener noreferrer">
-                  Start Consultation
+                <a href="https://t.me/Nexivotechnology_bot" className="hover:text-[#2D5FFF] transition-colors" target="_blank" rel="noopener noreferrer">
+                  Start a Conversation
                 </a>
               </div>
               <div className="flex items-start gap-2">
