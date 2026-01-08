@@ -21,7 +21,7 @@ This guide will walk you through setting up a Telegram bot to receive lead notif
 3. **Look for the `chat.id`** field in the response - this is your Chat ID
 4. **Save your Chat ID** (it's usually a number, e.g., `123456789`)
 
-## Step 3: Configure Environment Variables
+## Step 4: Configure Environment Variables
 
 1. **Create a `.env.local` file** in your project root (if it doesn't exist)
 2. **Add your Telegram credentials**:
@@ -34,6 +34,15 @@ This guide will walk you through setting up a Telegram bot to receive lead notif
    SUPABASE_URL=your_supabase_url
    SUPABASE_SERVICE_KEY=your_supabase_service_key
    ```
+
+## Step 5: Update Your Bot Username
+
+1. **Edit the TelegramContact component** (`src/app-components/components/TelegramContact.tsx`)
+2. **Update the bot username** on line 20:
+   ```typescript
+   const botUsername = "your_actual_bot_username"; // Change this to your bot's username
+   ```
+3. **Make sure it matches** your bot's actual username (without @)
 
 ## Step 4: Test Your Bot
 

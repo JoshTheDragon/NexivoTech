@@ -3,6 +3,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { Send, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,14 +18,16 @@ export function TelegramContact() {
     name: "",
     email: "",
     company: "",
+    industry: "",
+    service: "",
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTelegramClick = () => {
-    // Replace with your actual Telegram username or bot
-    const telegramUsername = "nexivo"; // Change this to your Telegram username
-    window.open(`https://t.me/${telegramUsername}`, '_blank');
+    // Open your bot directly - replace with your actual bot username
+    const botUsername = "nexivo_lead_bot"; // Change this to your bot's username
+    window.open(`https://t.me/${botUsername}`, '_blank');
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -60,6 +69,8 @@ export function TelegramContact() {
         name: "",
         email: "",
         company: "",
+        industry: "",
+        service: "",
         message: ""
       });
       
@@ -131,6 +142,45 @@ export function TelegramContact() {
                   placeholder="Your company"
                   className="bg-white/20 border-white/30 text-white placeholder-white/60"
                 />
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="quick-industry" className="text-white">Industry</Label>
+                  <Select value={formData.industry} onValueChange={(value) => handleInputChange("industry", value)}>
+                    <SelectTrigger id="quick-industry" className="bg-white/20 border-white/30 text-white">
+                      <SelectValue placeholder="Select industry" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#2D5FFF] border-white/30">
+                      <SelectItem value="healthcare" className="text-white hover:bg-white/10">Healthcare</SelectItem>
+                      <SelectItem value="logistics" className="text-white hover:bg-white/10">Logistics & Supply Chain</SelectItem>
+                      <SelectItem value="realestate" className="text-white hover:bg-white/10">Real Estate</SelectItem>
+                      <SelectItem value="smartcity" className="text-white hover:bg-white/10">Smart Infrastructure</SelectItem>
+                      <SelectItem value="fintech" className="text-white hover:bg-white/10">FinTech</SelectItem>
+                      <SelectItem value="retail" className="text-white hover:bg-white/10">Retail & E-commerce</SelectItem>
+                      <SelectItem value="manufacturing" className="text-white hover:bg-white/10">Manufacturing</SelectItem>
+                      <SelectItem value="other" className="text-white hover:bg-white/10">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="quick-service" className="text-white">Service Interest</Label>
+                  <Select value={formData.service} onValueChange={(value) => handleInputChange("service", value)}>
+                    <SelectTrigger id="quick-service" className="bg-white/20 border-white/30 text-white">
+                      <SelectValue placeholder="Select service" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#2D5FFF] border-white/30">
+                      <SelectItem value="ai-systems" className="text-white hover:bg-white/10">AI-Powered Systems</SelectItem>
+                      <SelectItem value="cloud" className="text-white hover:bg-white/10">Cloud Automation</SelectItem>
+                      <SelectItem value="process" className="text-white hover:bg-white/10">Process Automation</SelectItem>
+                      <SelectItem value="analytics" className="text-white hover:bg-white/10">Predictive Analytics</SelectItem>
+                      <SelectItem value="infrastructure" className="text-white hover:bg-white/10">Smart Infrastructure</SelectItem>
+                      <SelectItem value="scalability" className="text-white hover:bg-white/10">Scalable Growth Tech</SelectItem>
+                      <SelectItem value="custom" className="text-white hover:bg-white/10">Custom Solution</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               
               <div className="space-y-2">
