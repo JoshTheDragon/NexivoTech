@@ -89,6 +89,37 @@ export default async function handler(req, res) {
     }
 
     console.log("Successfully created consultation record:", data[0]?.id);
+
+    // Send Telegram notification
+    try {
+      const telegramResponse = await fetch(`${req.headers.origin}/api/send-telegram`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          company,
+          phone,
+          industry,
+          service,
+          message
+        }),
+      });
+
+      const telegramData = await telegramResponse.json();
+      
+      if (!telegramResponse.ok) {
+        console.error('Telegram notification failed:', telegramData);
+      } else {
+        console.log('Telegram notification sent successfully');
+      }
+    } catch (telegramError) {
+      console.error('Error sending Telegram notification:', telegramError);
+      // Don't fail the main request if Telegram fails
+    }
+
     return res.status(200).json({ ok: true, id: data[0]?.id });
   } catch (err) {
     console.error("Unexpected error:", err);
