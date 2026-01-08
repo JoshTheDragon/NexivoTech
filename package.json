@@ -2,7 +2,6 @@
   "name": "@figma/my-make-file",
   "private": true,
   "version": "0.0.1",
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -49,7 +48,7 @@
     "input-otp": "1.4.2",
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
-    "next": "15.1.6",
+    "next": "^16.1.1",
     "next-themes": "0.4.6",
     "react": "18.3.1",
     "react-day-picker": "8.10.1",
@@ -68,13 +67,14 @@
     "vaul": "1.1.2"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "4.1.12",
+    "@tailwindcss/postcss": "4.1.12",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.1.6",
-    "tailwindcss": "4.1.12",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.16",
     "typescript": "^5.0.0"
   },
   "pnpm": {

@@ -1,29 +1,49 @@
 import { useState } from "react";
-import { Hero } from "../src/app/components/Hero";
-import { Features } from "../src/app/components/Features";
-import { Testimonials } from "../src/app/components/Testimonials";
-import { Pricing } from "../src/app/components/Pricing";
-import { FAQ } from "../src/app/components/FAQ";
-import { Contact } from "../src/app/components/Contact";
-import { Footer } from "../src/app/components/Footer";
-import { BookingDialog } from "../src/app/components/BookingDialog";
+import { Navbar } from "../src/app-components/components/Navbar";
+import { Hero } from "../src/app-components/components/Hero";
+import { Services } from "../src/app-components/components/Services";
+import { Features } from "../src/app-components/components/Features";
+import { CaseStudies } from "../src/app-components/components/CaseStudies";
+import { TelegramContact } from "../src/app-components/components/TelegramContact";
+import { Footer } from "../src/app-components/components/Footer";
+import { BookingDialog } from "../src/app-components/components/BookingDialog";
+import { Toaster } from "../src/app-components/components/ui/sonner";
 
 export default function Home() {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
-      <Hero onBookConsultation={() => setIsBookingOpen(true)} />
-      <Features />
-      <Testimonials />
-      <Pricing onBookConsultation={() => setIsBookingOpen(true)} />
-      <FAQ />
-      <Contact onBookConsultation={() => setIsBookingOpen(true)} />
+    <div className="min-h-screen">
+      <Navbar onBookingClick={() => setBookingDialogOpen(true)} />
+      
+      <main>
+        <Hero onBookingClick={() => setBookingDialogOpen(true)} />
+        
+        <div id="services">
+          <Services />
+        </div>
+        
+        <div id="features">
+          <Features />
+        </div>
+        
+        <div id="case-studies">
+          <CaseStudies />
+        </div>
+        
+        <div id="contact">
+          <TelegramContact />
+        </div>
+      </main>
+      
       <Footer />
+      
       <BookingDialog 
-        open={isBookingOpen} 
-        onOpenChange={setIsBookingOpen} 
+        open={bookingDialogOpen} 
+        onOpenChange={setBookingDialogOpen}
       />
+      
+      <Toaster />
     </div>
   );
 }

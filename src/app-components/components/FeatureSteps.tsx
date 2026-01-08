@@ -23,24 +23,24 @@ export function FeatureSteps({
   features,
   className,
   title = "How to get Started",
-  autoPlayInterval = 4000,
+  autoPlayInterval = 0, // Disabled auto-play
   imageHeight = "h-[400px]",
 }: FeatureStepsProps) {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (progress < 100) {
-        setProgress((prev) => prev + 100 / (autoPlayInterval / 100));
-      } else {
-        setCurrentFeature((prev) => (prev + 1) % features.length);
-        setProgress(0);
-      }
-    }, 100);
-
-    return () => clearInterval(timer);
-  }, [progress, features.length, autoPlayInterval]);
+  // Remove auto-play functionality that was causing scroll issues
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     if (progress < 100) {
+  //       setProgress((prev) => prev + 100 / (autoPlayInterval / 100));
+  //     } else {
+  //       setCurrentFeature((prev) => (prev + 1) % features.length);
+  //       setProgress(0);
+  //     }
+  //   }, 100);
+  //   return () => clearInterval(timer);
+  // }, [progress, features.length, autoPlayInterval]);
 
   const handleFeatureClick = (index: number) => {
     setCurrentFeature(index);
